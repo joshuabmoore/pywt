@@ -75,6 +75,10 @@ if have_c99_complex
   c_args += ['-DHAVE_C99_COMPLEX', '-DCYTHON_CCOMPLEX=1']
 endif
 
+if host_machine.system() == 'windows'
+  c_args += ['-D_USE_MATH_DEFINES']
+endif
+
 libc_wt = static_library('c_wt',
   sources,
   c_args : c_args,
