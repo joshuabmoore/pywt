@@ -113,11 +113,11 @@ def cwt(data, scales, wavelet, sampling_period=1., method='conv', axis=-1):
     if not np.isscalar(axis):
         raise AxisError("axis must be a scalar.")
 
-    dt_out = dt_cplx if wavelet.complex_cwt else dt
+    dt_out = dt_cplx if (isinstance(wavelet, ContinuousWavelet) and wavelet.complex_cwt) else dt
     out = np.empty((np.size(scales),) + data.shape, dtype=dt_out)
     precision = 10
     int_psi, x = integrate_wavelet(wavelet, precision=precision)
-    int_psi = np.conj(int_psi) if wavelet.complex_cwt else int_psi
+    int_psi = np.conj(int_psi) if (isinstance(wavelet, ContinuousWavelet) and wavelet.complex_cwt) else int_psi
 
     # convert int_psi, x to the same precision as the data
     dt_psi = dt_cplx if int_psi.dtype.kind == 'c' else dt
